@@ -1,10 +1,8 @@
-import { decode } from "bmp-js";
 import ky from "ky";
 
-const token = "XXX";
-
-const bmp = decode(Buffer.from(await Bun.file("./bmp").arrayBuffer()));
-const data = bmp.data;
+const token = "jan-kocourek-98a35af78caa";
+const offset_x = 32;
+const offset_y = 0;
 
 type Pixel = {
   r: number;
@@ -15,24 +13,20 @@ type Pixel = {
   y: number;
 };
 const pixels: Pixel[] = [];
-
-for (let i = 0; i < bmp.width * bmp.height; i += 4) {
-  const a = data[i];
-  const b = data[i + 1];
-  const g = data[i + 2];
-  const r = data[i + 3];
-  const x = i % bmp.width;
-  const y = Math.floor(i / bmp.width);
-  pixels.push({ r, g, b, x, y });
+const file = await Bun.file("./output").text();
+for (const line of file.split("\n")) {
+  const [x, y, r, g, b] = line.split(" ").map(Number);
+  pixels.push({ x, y, r, g, b });
 }
 
+let i = 0;
 for (const pixel of pixels) {
   const res = await ky("http://misto.i.protab.cz/api/draw", {
     method: "POST",
     json: {
       token,
-      x: pixel.x,
-      y: pixel.y,
+      x: pixel.x + offset_x,
+      y: pixel.y + offset_y,
       color: [pixel.r, pixel.g, pixel.b],
     },
   }).json<{
@@ -46,7 +40,7 @@ for (const pixel of pixels) {
     process.exit();
   }
 
-  console.log(JSON.stringify(pixel));
+  console.log(`Placed pixel ${i++}/${pixels.length}`);
 
   await new Promise((resolve) => setTimeout(resolve, res.cooldown));
 }
