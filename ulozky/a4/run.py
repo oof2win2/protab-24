@@ -1,7 +1,7 @@
 import maze
 from time import sleep
 
-c = maze.Connect('oof2win2', 'parovod')
+c = maze.Connect('oof2win2', 'karimatka')
 print("Conn")
 print('Šířka hrací plochy je', c.width)
 print('Výška hrací plochy je', c.height)
@@ -171,5 +171,5 @@ for node in path:
         ensure_rotation(UP)
         c.move('w')
     prev = node
-    sleep(0.05)
+    # sleep(0.05)
 c.wait()
