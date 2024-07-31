@@ -56,7 +56,6 @@ def bfs():
     node = queue.pop(0)
     x, y = node
     neighbors = get_neighbor_coords(x, y)
-    print(neighbors)
     for neighbor in neighbors:
         if neighbor in visited:
             continue
@@ -68,11 +67,6 @@ def bfs():
 while len(queue) > 0:
     bfs()
 distances[endy][endx] = 0
-print(distances)
-print(endy, endx)
-print(distances[starty][startx])
-print(distances[starty][startx])
-print(distances[endy][endx])
 
 # now we have distances from end to all fields
 # we can use this to find the shortest path
@@ -92,7 +86,6 @@ while dist > 0:
     min_node = None
     for neighbor in neighbors:
         nx, ny = neighbor
-        print(distances[ny][nx], min_dist, ny, nx)
         if distances[ny][nx] < min_dist:
             min_dist = distances[ny][nx]
             min_node = neighbor
@@ -100,15 +93,13 @@ while dist > 0:
         print("No path found")
         exit(0)
     x, y = min_node
-    print(min_dist, min_node, i)
     i += 1
     path.append(min_node)
     if min_node == (endx, endy):
         break
     dist = min_dist
-print(len(path))
 
-print(path[0])
+
 prev = (startx, starty)
 for node in path:
     dx = node[0] - prev[0]
