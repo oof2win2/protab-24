@@ -2,7 +2,7 @@ from PIL import Image
 
 TOKEN = "jan-kocourek-98a35af78caa"
 
-im = Image.open("gitrebase.png")
+im = Image.open("nyancat.png")
 pixels = list(im.getdata())
 width, height = im.size
 pixels = [pixels[i * width:(i + 1) * width] for i in range(height)]
@@ -15,4 +15,4 @@ for y, row in enumerate(pixels):
         else:
             r, g, b, a = pixel
         if a != 255: continue
-        print(f"{x} {y} {r} {g} {b} {a}")
+        print(f"{x} {y} {r} {g} {b}")
